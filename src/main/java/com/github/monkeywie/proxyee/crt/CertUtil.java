@@ -111,8 +111,7 @@ public class CertUtil {
      * 从文件加载RSA公钥 openssl rsa -in ca.key -pubout -outform DER -out ca_pub.der
      */
     public static PublicKey loadPubKey(String path) throws Exception {
-        EncodedKeySpec publicKeySpec = new X509EncodedKeySpec(Files.readAllBytes(Paths.get(path)));
-        return getKeyFactory().generatePublic(publicKeySpec);
+        return loadPubKey(Files.readAllBytes(Paths.get(path)));
     }
 
     /**

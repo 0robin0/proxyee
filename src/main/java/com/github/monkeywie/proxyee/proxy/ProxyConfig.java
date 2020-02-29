@@ -11,22 +11,25 @@ public class ProxyConfig implements Serializable {
     private int port;
     private String user;
     private String pwd;
+    private long timeout ;
 
     public ProxyConfig() {
     }
 
-    public ProxyConfig(ProxyType proxyType, String host, int port) {
+    public ProxyConfig(ProxyType proxyType, String host, int port,long timeout) {
         this.proxyType = proxyType;
         this.host = host;
         this.port = port;
+        this.timeout=timeout;
     }
 
-    public ProxyConfig(ProxyType proxyType, String host, int port, String user, String pwd) {
+    public ProxyConfig(ProxyType proxyType, String host, int port, String user, String pwd,long timeout) {
         this.proxyType = proxyType;
         this.host = host;
         this.port = port;
         this.user = user;
         this.pwd = pwd;
+        this.timeout=timeout;
     }
 
     public ProxyType getProxyType() {

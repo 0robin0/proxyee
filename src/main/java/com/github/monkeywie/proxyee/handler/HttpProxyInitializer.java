@@ -20,6 +20,8 @@ public class HttpProxyInitializer extends ChannelInitializer {
         this.clientChannel = clientChannel;
         this.requestProto = requestProto;
         this.proxyHandler = proxyHandler;
+        
+        
     }
 
     @Override
@@ -27,7 +29,7 @@ public class HttpProxyInitializer extends ChannelInitializer {
         if (proxyHandler != null) {
             ch.pipeline().addLast(proxyHandler);
         }
-        if (requestProto.getSsl()) {
+        if (requestProto.isSsl()) {
             ch.pipeline().addLast(
                     ((HttpProxyServerHandle) clientChannel.pipeline().get("serverHandle")).getServerConfig()
                             .getClientSslCtx()

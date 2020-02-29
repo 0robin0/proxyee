@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="false" scan="true" scanPeriod="1 seconds">
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <contextName>logback</contextName>
+    <springProperty scope="context" name="logName" source="spring.application.name" defaultValue="localhost"/>
+    <!-- <property name="log.path" value="/data/logs/al-job-schedule-demo/${spring.application.name}.log"/> -->
+    <property name="log.path" value="./logs"/>
+    <property name="CONSOLE_LOG_PATTERN"
+              value="|%level|%d{yyyy-MM-dd HH:mm:ss.SSS}|%X{threadId}|%X{traceId}-%X{spanId}|%C|%M|%L|uid=%X{uid}|%.-512msg|%X{callChain}%n"/>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 文件输出日志 (文件大小策略进行文件输出，超过指定大小对文件备份) -->
+    <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log.path}/proxy.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logName}.%d{yyyy-MM-dd}.zip</fileNamePattern>
+            <maxHistory>30</maxHistory>
+            <cleanHistoryOnStart>true</cleanHistoryOnStart>
+        </rollingPolicy>
+        <layout>
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+        </layout>
+    </appender>
+
+    <root level="info">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="file"/>
+    </root>
+</configuration>

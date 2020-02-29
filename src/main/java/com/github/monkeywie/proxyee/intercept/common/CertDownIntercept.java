@@ -43,6 +43,7 @@ public class CertDownIntercept extends HttpProxyIntercept {
                 clientChannel.writeAndFlush(httpResponse);
                 clientChannel.writeAndFlush(httpContent);
                 clientChannel.close();
+                //crtFlag = false;
             } else if (httpRequest.uri().matches("^.*/favicon.ico$")) {
                 clientChannel.close();
             } else {  //跳转下载页面

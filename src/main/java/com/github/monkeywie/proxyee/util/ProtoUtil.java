@@ -12,7 +12,7 @@ public class ProtoUtil {
 
     public static RequestProto getRequestProto(HttpRequest httpRequest) {
         RequestProto requestProto = new RequestProto();
-        int port = -1;
+
         String hostStr = httpRequest.headers().get(HttpHeaderNames.HOST);
         if (hostStr == null) {
             Pattern pattern = Pattern.compile("^(?:https?://)?(?<host>[^/]*)/?.*$");
@@ -23,6 +23,8 @@ public class ProtoUtil {
                 return null;
             }
         }
+
+        int port = -1;
         String uriStr = httpRequest.uri();
         Pattern pattern = Pattern.compile("^(?:https?://)?(?<host>[^:]*)(?::(?<port>\\d+))?(/.*)?$");
         Matcher matcher = pattern.matcher(hostStr);
@@ -41,7 +43,8 @@ public class ProtoUtil {
         if (portTemp != null) {
             port = Integer.parseInt(portTemp);
         }
-        boolean isSsl = uriStr.indexOf("https") == 0 || hostStr.indexOf("https") == 0;
+
+        boolean isSsl = (uriStr.indexOf("https") == 0 || hostStr.indexOf("https") == 0);
         if (port == -1) {
             if (isSsl) {
                 port = 443;
@@ -86,7 +89,7 @@ public class ProtoUtil {
             this.port = port;
         }
 
-        public boolean getSsl() {
+        public boolean isSsl() {
             return ssl;
         }
 

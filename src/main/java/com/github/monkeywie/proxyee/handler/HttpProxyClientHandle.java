@@ -24,6 +24,7 @@ public class HttpProxyClientHandle extends ChannelInboundHandlerAdapter {
             ReferenceCountUtil.release(msg);
             return;
         }
+
         HttpProxyInterceptPipeline interceptPipeline = ((HttpProxyServerHandle) clientChannel.pipeline()
                 .get("serverHandle")).getInterceptPipeline();
         if (msg instanceof HttpResponse) {

@@ -37,6 +37,7 @@ public class ProxyHandleFactory {
                     break;
             }
         }
+        proxyHandler.setConnectTimeoutMillis(15000);
         return proxyHandler;
 
     }

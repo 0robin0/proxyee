@@ -47,7 +47,11 @@ public class HttpProxyInterceptPipeline implements Iterable<HttpProxyIntercept> 
     }
 
     public void addLast(HttpProxyIntercept intercept) {
-        this.intercepts.add(this.intercepts.size() - 1, intercept);
+        if(0 == this.intercepts.size()){
+            this.intercepts.add(0, intercept);
+        } else {
+            this.intercepts.add(this.intercepts.size() - 1, intercept);
+        }
     }
 
     public void addFirst(HttpProxyIntercept intercept) {

@@ -145,6 +145,7 @@ public class HttpProxyServerHandle extends ChannelInboundHandlerAdapter {
             if (isHttp && !(msg instanceof HttpRequest)) {
                 return;
             }
+
             ProxyHandler proxyHandler = ProxyHandleFactory.build(proxyConfig);
             /*
              * 添加SSL client hello的Server Name Indication extension(SNI扩展) 有些服务器对于client
@@ -164,8 +165,8 @@ public class HttpProxyServerHandle extends ChannelInboundHandlerAdapter {
                 RequestProto newRP = ProtoUtil.getRequestProto(httpRequest);
                 if (!newRP.equals(requestProto)) {
                     // 更新Host请求头
-                    if ((requestProto.getSsl() && requestProto.getPort() == 443)
-                            || (!requestProto.getSsl() && requestProto.getPort() == 80)) {
+                    if ((requestProto.isSsl() && requestProto.getPort() == 443)
+                            || (!requestProto.isSsl() && requestProto.getPort() == 80)) {
                         httpRequest.headers().set(HttpHeaderNames.HOST, requestProto.getHost());
                     } else {
                         httpRequest.headers().set(HttpHeaderNames.HOST, requestProto.getHost() + ":" + requestProto.getPort());
@@ -174,7 +175,10 @@ public class HttpProxyServerHandle extends ChannelInboundHandlerAdapter {
             }
             ChannelInitializer channelInitializer = isHttp ? new HttpProxyInitializer(channel, requestProto, proxyHandler)
                     : new TunnelProxyInitializer(channel, proxyHandler);
+
             Bootstrap bootstrap = new Bootstrap();
+            bootstrap.option(ChannelOption.SO_TIMEOUT, 5000);//设置io超时时间
+            bootstrap.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 5000);//设置连接超时时间
             bootstrap.group(serverConfig.getProxyLoopGroup()) // 注册线程池
                     .channel(NioSocketChannel.class) // 使用NioSocketChannel来作为连接用的channel类
                     .handler(channelInitializer);
